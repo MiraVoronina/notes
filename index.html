@@ -20,6 +20,12 @@
             <h2>Столбец {{ index + 1 }}</h2>
             <div v-for="(card, cardIndex) in cards" :key="card.id" class="card">
                 <input type="text" v-model="card.title" placeholder="Заголовок" />
+                <ul>
+                    <li v-for="(item, itemIndex) in card.items" :key="itemIndex">
+                        <input type="checkbox" v-model="item.completed" />
+                        <input type="text" v-model="item.text" placeholder="Пункт списка" />
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

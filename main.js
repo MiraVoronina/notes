@@ -2,7 +2,9 @@ new Vue({
     el: '#app',
     data: {
         columns: [[], [], []],
-        nextId: 1
+        nextId: 1,
+        newTitle: '',
+        newItem: ''
     },
     methods: {
         addCard() {
@@ -10,8 +12,11 @@ new Vue({
 
             this.columns[0].push({
                 id: this.nextId++,
-                title: 'Новая карточка'
+                title: this.newTitle,
+                items: [{ text: this.newItem, completed: false }]
             });
+            this.newTitle = '';
+            this.newItem = '';
         }
     }
 });
