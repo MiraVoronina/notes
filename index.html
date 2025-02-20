@@ -17,15 +17,19 @@
     <h1>Менеджер заметок</h1>
     <div class="columns">
         <div v-for="(cards, index) in columns" :key="index" class="column">
-            <h2>Столбец {{ index + 1 }}</h2>
-            <div v-for="(card, cardIndex) in cards" :key="card.id" class="card">
+            <h2>{{ columnTitles[index] }}</h2>
+            <div v-for="(card, cardIndex) in cards" :key="card.id" class="card" :class="{ disabled: isColumnLocked(index) }">
                 <input type="text" v-model="card.title" placeholder="Заголовок" />
                 <ul>
                     <li v-for="(item, itemIndex) in card.items" :key="itemIndex">
-                        <input type="checkbox" v-model="item.completed" />
+                        <input type="checkbox" v-model="item.completed" @change="updateCardStatus(card)" />
                         <input type="text" v-model="item.text" placeholder="Пункт списка" />
+                        <button @click="removeItem(card, itemIndex)">Удалить пункт</button>
                     </li>
                 </ul>
+                <button @click="addItem(card)">Добавить пункт</button>
+                <button @click="removeCard(index, cardIndex)">Удалить карточку</button>
+                <span v-if="card.completedAt">Завершено: {{ card.completedAt }}</span>
             </div>
         </div>
     </div>
