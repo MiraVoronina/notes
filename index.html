@@ -16,10 +16,14 @@
 <div id="app">
     <h1>Менеджер заметок</h1>
     <div class="columns">
-        <div v-for="(column, index) in columns" :key="index" class="column">
+        <div v-for="(cards, index) in columns" :key="index" class="column">
             <h2>Столбец {{ index + 1 }}</h2>
+            <div v-for="(card, cardIndex) in cards" :key="card.id" class="card">
+                <input type="text" v-model="card.title" placeholder="Заголовок" />
+            </div>
         </div>
     </div>
+    <button @click="addCard">Добавить карточку</button>
 </div>
 </body>
 </html>

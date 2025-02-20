@@ -13,3 +13,8 @@
 h2 {
     text-align: center;
 }
+.card {
+    border: 1px solid #999;
+    padding: 10px;
+    margin-bottom: 10px;
+}
