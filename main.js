@@ -19,9 +19,11 @@ new Vue({
             });
             this.newTitle = '';
             this.newItem = '';
+            this.saveData();
         },
         removeCard(columnIndex, cardIndex) {
             this.columns[columnIndex].splice(cardIndex, 1);
+            this.saveData();
         },
         updateCardStatus(card) {
             const completedCount = card.items.filter(item => item.completed).length;
@@ -39,6 +41,8 @@ new Vue({
                 card.completedAt = new Date().toLocaleString();
                 this.moveCard(0, 2, card); // Перемещаем сразу в третий столбец
             }
+
+            this.saveData();
         },
         moveCard(fromIndex, toIndex, card) {
             const fromColumn = this.columns[fromIndex];
@@ -48,6 +52,7 @@ new Vue({
             if (cardIndex !== -1) {
                 toColumn.push(fromColumn.splice(cardIndex, 1)[0]);
             }
+            this.saveData();
         },
         isColumnLocked(index) {
             if (index === 0 && this.columns[1].length >= 5) {
@@ -59,10 +64,23 @@ new Vue({
             if (card.items.length >= 5) return; // Ограничение на количество пунктов в карточке
 
             card.items.push({ text: '', completed: false });
+            this.saveData();
         },
         removeItem(card, itemIndex) {
             card.items.splice(itemIndex, 1);
+            this.saveData();
+        },
+        saveData() {
+            localStorage.setItem('noteAppData', JSON.stringify(this.columns));
+        },
+        loadData() {
+            const savedData = localStorage.getItem('noteAppData');
+            if (savedData) {
+                this.columns = JSON.parse(savedData);
+            }
         }
-        
+    },
+    created() {
+        this.loadData();
     }
 });
