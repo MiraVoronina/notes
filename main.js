@@ -32,13 +32,18 @@ new Vue({
             const totalItems = card.items.length;
             if (totalItems === 0) return;
             const completionPercentage = (completedCount / totalItems) * 100;
+
             if (completionPercentage > 50 && completionPercentage < 100) {
                 if (this.columns[1].length < 5) {
                     this.moveCard(0, 1, card);
                 }
             } else if (completionPercentage === 100) {
                 card.completedAt = new Date().toLocaleString();
-                this.moveCard(0, 2, card); // Перемещаем сразу в третий столбец
+                // Перемещаем карточку в третий столбец, если все пункты выполнены
+                let currentIndex = this.columns.findIndex(column => column.some(c => c.id === card.id));
+                if (currentIndex !== -1 && currentIndex !== 2) {
+                    this.moveCard(currentIndex, 2, card);
+                }
             }
             this.saveData();
         },
