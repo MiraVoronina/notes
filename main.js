@@ -4,21 +4,23 @@ new Vue({
         columns: [[], [], []],
         columnTitles: ['В процессе', 'На проверке', 'Выполнено'],
         nextId: 1,
-        newTitle: '',
-        newItem: ''
+        newTitle: ''
     },
     methods: {
         addCard() {
             if (this.columns[0].length >= 3) return;
-
+            const initialItems = [
+                { text: '', completed: false },
+                { text: '', completed: false },
+                { text: '', completed: false }
+            ];
             this.columns[0].push({
                 id: this.nextId++,
                 title: this.newTitle,
-                items: [{ text: this.newItem, completed: false }],
+                items: initialItems,
                 completedAt: null
             });
             this.newTitle = '';
-            this.newItem = '';
             this.saveData();
         },
         removeCard(columnIndex, cardIndex) {
@@ -28,11 +30,8 @@ new Vue({
         updateCardStatus(card) {
             const completedCount = card.items.filter(item => item.completed).length;
             const totalItems = card.items.length;
-
             if (totalItems === 0) return;
-
             const completionPercentage = (completedCount / totalItems) * 100;
-
             if (completionPercentage > 50 && completionPercentage < 100) {
                 if (this.columns[1].length < 5) {
                     this.moveCard(0, 1, card);
@@ -41,13 +40,11 @@ new Vue({
                 card.completedAt = new Date().toLocaleString();
                 this.moveCard(0, 2, card); // Перемещаем сразу в третий столбец
             }
-
             this.saveData();
         },
         moveCard(fromIndex, toIndex, card) {
             const fromColumn = this.columns[fromIndex];
             const toColumn = this.columns[toIndex];
-
             const cardIndex = fromColumn.findIndex(c => c.id === card.id);
             if (cardIndex !== -1) {
                 toColumn.push(fromColumn.splice(cardIndex, 1)[0]);
@@ -62,11 +59,11 @@ new Vue({
         },
         addItem(card) {
             if (card.items.length >= 5) return; // Ограничение на количество пунктов в карточке
-
             card.items.push({ text: '', completed: false });
             this.saveData();
         },
         removeItem(card, itemIndex) {
+            if (card.items.length <= 3) return; // Не удаляем пункт, если их меньше 3
             card.items.splice(itemIndex, 1);
             this.saveData();
         },

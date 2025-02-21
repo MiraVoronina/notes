@@ -3,34 +3,28 @@ body {
     margin: 0;
     padding: 0;
 }
-
 .columns {
     display: flex;
     gap: 20px;
     padding: 20px;
 }
-
 .column {
     border: 1px solid #ccc;
     padding: 10px;
     width: 30%;
 }
-
 .card {
     border: 1px solid #999;
     padding: 10px;
     margin-bottom: 10px;
 }
-
 .disabled {
     opacity: 0.5;
     pointer-events: none;
 }
-
 h2 {
     text-align: center;
 }
-
 button {
     margin-top: 10px;
 }
