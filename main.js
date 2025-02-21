@@ -63,5 +63,6 @@ new Vue({
         removeItem(card, itemIndex) {
             card.items.splice(itemIndex, 1);
         }
+        
     }
 });
